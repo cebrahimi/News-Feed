@@ -1,0 +1,154 @@
+﻿@model News.Models.LoginRegisterForm
+<nav class="navbar navbar-inverse navbar-embossed navbar-expand-lg 
+            d-flex flex-row justify-content-between align-items-center" role="navigation">
+    <h3 class="title">Outright News</h3>
+    <div class="email-text" id="email"></div>
+    <div class="d-flex justify-content-between mr-2">
+        <div class="dropdown">
+            <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Settings
+            </button>
+            <div class="dropdown-menu" id="settings_dropdown" aria-labelledby="dropdownMenuButton">
+                <label for="focus-switch"><span class="fui-search mr-2"></span>Focus mode</label>
+                <input id="focus-switch" type="checkbox" name="focus-mode" data-size="large">
+                <label for="theme-switch"><span class="fui-new mr-2"></span>Change theme</label>
+                <input id="theme-switch" type="checkbox" name="focus-mode" checked data-size="large">
+
+                @* <div class="dropdown-divider"></div> *@
+                @* <input type="button" value="Profile" class="dropdown-item" onclick="location.href = '@Url.Action("Index", "Profile")'"/> *@
+            </div>
+        </div>
+        <button id="logout-btn" class="btn btn-default ml-3" type="button"
+                onclick="logout()"
+                style="display: none">
+            Logout
+        </button>
+        <button id="login-btn" class="btn btn-default ml-3" type="button"
+                data-type="Login"
+                data-toggle="modal"
+                data-target="#login-modal">
+            Login
+        </button>
+        <button id="signup-btn" class="btn btn-primary ml-3" type="button"
+                data-type="Signup"
+                data-toggle="modal"
+                data-target="#login-modal">
+            Sign Up
+        </button>
+    </div>
+</nav>
+<div id="focus-container">
+
+    <div class="row">
+        <div id="websites" class="col-lg-12 d-flex justify-content-around" overflow-auto>
+            <div class="website-container" onclick="websiteClick(this)" value="1">
+                <img src="~/images/cnn.png" />
+            </div>
+            <div class="website-container selected" onclick="websiteClick(this)" value="3">
+                <img src="~/images/BBC.png" />
+            </div>
+            <div class="website-container" onclick="websiteClick(this)" value="7">
+                <img src="~/images/CNBC.png" />
+            </div>
+            <div class="website-container" onclick="websiteClick(this)" value="10">
+                <img src="~/images/TechCrunch.png" />
+            </div>
+            <div class="website-container" onclick="websiteClick(this)" value="12">
+                <img src="~/images/FOX.png" />
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="divider-md"></div>
+        <div id="genres" class="genre-container col-lg-12" data-toggle="buttons" overflow-auto>
+            @Html.Partial("_Genres")
+        </div>
+        <div class="divider-lg"></div>
+
+    </div>
+</div>
+<div class="row d-flex justify-content-center">
+    <div class="col-md-4" style="display: none">
+        <div id="favourites" class="todo">
+            <div class="todo-search">
+                <input class="todo-search-field" type="search" oninput="searchFavourites(this)" placeholder="Search Favourites">
+                <div class="fui-list" data-toggle="tooltip" onclick="toggleFavourites(this)" data-original-title="Click to expand or shrink favourites"></div>
+            </div>
+            <ul>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8 d-flex flex-column align-items-center">
+        <div class="todo-search w-100">
+            <input id="article-search-field" class="todo-search-field" type="search" oninput="searchArticles(this)" placeholder="Search Articles">
+        </div>
+        <div id="articles" class="article-container" >
+            @Html.Partial("_Articles")
+        </div>
+    </div>
+</div>
+
+
+<!-- Login modal -->
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label asp-for="LoginUserEmail" class="login-field-icon fui-mail"></label>
+                        <input asp-for="LoginUserEmail" type="text" class="form-control login-field" required
+                               placeholder="Enter your email"
+                               pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b">
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LoginPassword" class="login-field-icon fui-lock"></label>
+                        <input asp-for="LoginPassword" type="password" class="form-control login-field" required
+                               placeholder="Password">
+                    </div>
+                    <div class="d-flex flex-column justify-content-end align-items-center">
+                        <button type="submit" class="btn btn-primary mb-2 btn-lg w-100">Login</button>
+                        <button type="button" class="btn btn-default btn-lg w-100" data-dismiss="modal">Close</button>
+                        <a class="pt-2" href="/PasswordReset/Index/">Forgot password?</a>
+                    </div>
+                </form>
+                <form id="signup-form" class="login-form" style="display: none">
+                    <div class="form-group">
+                        <label asp-for="RegisterEmail" class="login-field-icon fui-mail"></label>
+                        <input asp-for="RegisterEmail" type="text" class="form-control login-field" required
+                               pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b"
+                               placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RegisterUsername" class="login-field-icon fui-user"></label>
+                        <input asp-for="RegisterUsername" type="text" class="form-control login-field" required
+                               placeholder="Enter your username">
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RegisterPassword" class="login-field-icon fui-lock"></label>
+                        <input asp-for="RegisterPassword" type="password" class="form-control login-field" required
+                               placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RegisterPasswordCheck" class="login-field-icon fui-lock"></label>
+                        <input asp-for="RegisterPasswordCheck" type="password" class="form-control login-field" required
+                               placeholder="Validate password">
+                    </div>
+                    <div class="d-flex flex-column justify-content-end">
+                        <button type="submit" class="btn btn-primary mb-2 btn-lg">Sign up</button>
+                        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+                <p id="response" class="login-form mt-2"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="~/css/site.css" rel="stylesheet">
+
+<script src="~/js/formhandler.js"></script>
+<script src="~/js/userAuth.js"></script>
+<script src="~/js/favourite.js"></script>
+<script src="~/js/filter.js"></script>
+<script src="~/js/site.js"></script>

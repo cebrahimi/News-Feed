@@ -1,0 +1,25 @@
+﻿<div class="reset-page container">
+    <h1>Reset your password below</h1>
+    <form id="change-pass-form" class="login-form">
+        <div class="form-group">
+            <label for="password" class="login-field-icon fui-lock"></label>
+            <input name="password" type="password" class="form-control login-field" required
+                   placeholder="New Password">
+        </div>
+        <div class="form-group">
+            <label for="passwordCheck" class="login-field-icon fui-lock"></label>
+            <input name="passwordCheck" type="password" class="form-control login-field" required
+                   placeholder="Validate password">
+        </div>
+        <input name="userId" class="d-none" value='@ViewData["userId"]'>
+        <div class="d-flex flex-column justify-content-end">
+            <button type="submit" class="btn btn-primary mb-2 btn-lg">Reset password</button>
+        </div>
+    </form>
+</div>
+
+<link href="~/css/site.css" rel="stylesheet">
+<link href="~/css/password-reset.css" rel="stylesheet"/>
+
+<script src="~/js/formhandler.js"></script>
+<script src="~/js/password-reset-check-key.js"></script>

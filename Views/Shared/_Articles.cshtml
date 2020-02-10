@@ -1,0 +1,23 @@
+﻿@foreach (var article in ViewData["articles"] as List<Article>)
+{
+    <div id="@article.ID" class="card mb-3">
+        <div class="row no-gutters flex-wrap-reverse">
+            <div class="card-body">
+                <div class="fav-icon fui-heart" onclick="toggleFavourite(@article.ID)">
+                </div>
+                <a href="@article.WebsiteUrl" target="_blank">
+                    <h5 class="card-title" style="width: 90%;">@article.Title</h5>
+                </a>
+                <p class="card-subtitle mb-2 text-muted">@article.WebsiteName</p>
+                <p class="card-text">@article.Description</p>
+                @foreach (var genre in article.Genres)
+                {
+                    <div class='badge badge-primary'>#@genre</div>
+                }
+            </div>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Published : @article.Date</small>
+        </div>
+    </div>
+}

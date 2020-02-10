@@ -1,0 +1,6 @@
+﻿@foreach (var item in ViewData["genres"] as List<Genre>)
+{
+    <label class="genre-box tag-btn h6" onclick="genreClick(this)">
+        <checkbox id="@item.genre" checked autocomplete="off" data-type="genre">@item.genre</checkbox>
+    </label>
+}
